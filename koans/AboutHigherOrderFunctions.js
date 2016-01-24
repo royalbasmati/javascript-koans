@@ -10,6 +10,7 @@ describe("About Higher Order Functions", function () {
   it("should use filter to return array items that meet a criteria", function () {
     var numbers = [1,2,3];
     var odd = _(numbers).filter(function (x) { return x % 2 !== 0 });
+    console.log(_(numbers));
 
     expect(odd).toEqual([1,3]);
     expect(odd.length).toBe(2);

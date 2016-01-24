@@ -40,8 +40,8 @@ describe("About Applying What We Have Learnt", function() {
       var productsICanEat = [];
 
       /* solve using filter() & all() / any() */
-      var hasMushrooms = function(x) {return !(x === "mushrooms")};
-      productsICanEat = _(products).filter(function(x){return !(x.containsNuts) && _(x.ingredients).contains('mushrooms')});
+      var hasMushrooms = function(x) {return (x === "mushrooms")};
+      productsICanEat = _(products).filter(function(x){return !(x.containsNuts) && !(_(x.ingredients).any(hasMushrooms))});
       //productsICanEat = _(productsICanEat).filter(function(x){console.log(_(x.ingredients).contains('mushrooms'));_(x.ingredients).contains('mushrooms')});
       console.log('nuts free zone', productsICanEat);
 
@@ -58,16 +58,43 @@ describe("About Applying What We Have Learnt", function() {
         sum += i;
       }
     }
+    console.log(sum);
 
-    expect(sum).toBe(FILL_ME_IN);
+    expect(sum).toBe(233168);
   });
 
   it("should add all the natural numbers below 1000 that are multiples of 3 or 5 (functional)", function () {
+    var range1000 = _.range(1,1000);
+    var sumOnlyMultiplesOf3And5 = function (memo,x) {
+      if ((x % 3 === 0) || (x % 5 === 0)) {
+        console.log(x);
+        return memo + x;
+      }
+      else return memo;
+    }
+    
+    var sum = _(range1000).chain()
+        .reduce(sumOnlyMultiplesOf3And5,0)
+        .value();
 
-    var sum = FILL_ME_IN;    /* try chaining range() and reduce() */
+    //var sum = _(_.range(1,1000).reduce(function(sum,x){if (x % 3 === 0 || x % 5 === 0) console.log(sum,x);return sum + x}));    /* try chaining range() and reduce() */
+    /*var sum = _(_(_.range(1,1000).filter(function(x) {return (x % 3 === 0 || x % 5 === 0)}).reduce(function(memo,x){return memo + x})));
+    var sum2 = _(_(_.range(1,1000)).filter(function(x) {return (x % 3 === 0 || x % 5 === 0)})).reduce(function(memo,x){return memo +x})
+    console.log(sum2);*/
 
-    expect(233168).toBe(FILL_ME_IN);
+    expect(233168).toBe(sum);
   });
+
+  /*var sum3 = _.reduce(_.filter(_.range(1,1000), function(x){
+    return x % 3 === 0 || x % 5 === 0;
+  }), function(memo, x){
+      return memo + x;
+  });
+
+  var range1000 = _.range(1,1000;
+  var filteredArray = _.filter(range1000, function)
+
+  console.log(sum3)*/
 
   /*********************************************************************************/
    it("should count the ingredient occurrence (imperative)", function () {
@@ -76,27 +103,102 @@ describe("About Applying What We Have Learnt", function() {
     for (i = 0; i < products.length; i+=1) {
         for (j = 0; j < products[i].ingredients.length; j+=1) {
             ingredientCount[products[i].ingredients[j]] = (ingredientCount[products[i].ingredients[j]] || 0) + 1;
+            //console.log(i, j, ingredientCount);
         }
     }
+    //console.log(ingredientCount);
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   it("should count the ingredient occurrence (functional)", function () {
     var ingredientCount = { "{ingredient name}": 0 };
+    //console.log(ingredientCount);
+    var gatherIngredients = function (x) {return x['ingredients']};
+    var countingIngredients = function (memo, x) {
+      if (x in ingredientCount) {
+        memo[x] += 1;
+        return memo
+        //return memo = ingredientCount[x] += 1
+      }
+      else {
+        memo[x] = 1;
+        return memo;
+        //return memo = ingredientCount[x] = 1
+      };
+    //return ingredientCount[x];
+    }
 
     /* chain() together map(), flatten() and reduce() */
+   //console.log(ingredientCount);
+   //console.log(products);
+   var flatProducts = _(products).flatten();
+   //console.log(flatProducts);
+   var allIngredients = _(products).chain()
+    .map(gatherIngredients)
+    .flatten()
+    .reduce(countingIngredients, ingredientCount)
+    .value();
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+   console.log(allIngredients);
+   console.log(ingredientCount);
+
+
+   
+
+  
+
+
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   /*********************************************************************************/
   /* UNCOMMENT FOR EXTRA CREDIT */
-  /*
+  
   it("should find the largest prime factor of a composite number", function () {
+    var factorsOf = [];
+    var y = 2;
+    var factorTree = function(x,factors) {
+      if (x === 1) {
+        return "1 is neither composite nor prime"
+      }
+      else if (x % y === 0) {
+        factors.unshift(y);
+        x = x / y;
+        factorTree(x,factors);
+      }
+      else {
+        y++;
+        factorTree(x, factors);
+      }
+  return factors[0];
+  }
+  /*var findMax = function(arr) {
+    arr.sort();
+    return arr[arr.length - 1];
+  }*/
+  //console.log(findHighestPrime(867,2));
+  console.log(factorTree(867,factorsOf));
+  //console.log(findMax([3,6,8,34,2,6]));
+  /*var findMax = function(arr) {
+    return arr.sort();
+  }
+  var findHighestPrime = function(x,y) {
+    if (x === 1) {
+      return "1 is neither prime nor composite";
+    }
+    else if (x % y === 0) {
+      findHighestPrime((x/y),y);
+    }
+    else {
+      findHighestPrime((x/y),(y+1));
+    }
+    return y;
+  }*/
+  
 
   });
-
+/*
   it("should find the largest palindrome made from the product of two 3 digit numbers", function () {
 
   });
