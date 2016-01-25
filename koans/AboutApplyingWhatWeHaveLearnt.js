@@ -67,7 +67,7 @@ describe("About Applying What We Have Learnt", function() {
     var range1000 = _.range(1,1000);
     var sumOnlyMultiplesOf3And5 = function (memo,x) {
       if ((x % 3 === 0) || (x % 5 === 0)) {
-        console.log(x);
+        //console.log(x);
         return memo + x;
       }
       else return memo;
@@ -198,15 +198,61 @@ describe("About Applying What We Have Learnt", function() {
   
 
   });
-/*
+
   it("should find the largest palindrome made from the product of two 3 digit numbers", function () {
+    //var number = 10000;
+    //this a function to verify palindromes
+    var isPalindrome = function(number) {
+      var strNum = number.toString();
+      for (i = 0; i < (strNum.length/2); i++) {
+        if (!(strNum[i] === strNum[strNum.length - 1 - i])) {
+          return false;
+        }
+      }
+      return true;
+    };
+    //console.log(isPalindrome(678986), isPalindrome(146543212345641));
+    var findLargestPalindrome = function (num1,num2) {
+      if (isPalindrome(num1 * num2)) {
+        return num1 * num2;
+      }
+      else {
+        if (num1 % 2 === 0) {
+          return findLargestPalindrome((num1-1), num2);
+        }
+        else return findLargestPalindrome(num1,(num2-1));
+      }
+    }
+    console.log(findLargestPalindrome(999,999))
 
   });
+  
 
   it("should find the smallest number divisible by each of the numbers 1 to 20", function () {
+    var isDivisibleBy = function (num, divisor) {
+      if (num % divisor === 0) return true;
+    }
+    //console.log(isDivisbleBy(5674,2), isDivisbleBy(221, 17));
+    var smallestNumDivBy1To20 = function (start) {
+      for (i = 2; i <= 20; i++) {
+        if (!(isDivisibleBy(start, i))) {
+          smallestNumDivBy1To20(start + 1);
+        }
+      }
+      return start;
+    }
+    console.log(smallestNumDivBy1To20(232792500));
+    /*var test = function() {
+    for (i = 2; i <= 20; i++) {
+      if (!(isDivisibleBy(232792560, i))) return false;
+    }
+    return true;
+  }
+  console.log(test());*/
 
 
   });
+  /*
 
   it("should find the difference between the sum of the squares and the square of the sums", function () {
 
